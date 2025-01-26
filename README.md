@@ -1,139 +1,99 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/vxWRKI0Z)
-Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
+Assignment 2 - Short Stack: Basic Two-tier Web Application using HTML/CSS/JS and Node.js
 ===
 
-Due: February 10th, by 11:59 AM.
+Due: February 3rd, by 11:59 AM.
 
-This assignment continues where we left off, extending it to use the most popular Node.js server framework (Express), 
-a database ([MongoDB](https://www.mongodb.com/)), and a CSS style framework / template of your choice ([Material Tailwind](https://www.material-tailwind.com/),
-[MaterialUI](https://mui.com/), [Tailwind CSS](https://tailwindcss.com/), [Mantine](https://mantine.dev), [Shadcn](https://ui.shadcn.com/), etc.).
+This assignment will introduce you to creating a prototype two-tiered web application.
+Your application will include the use of HTML, CSS, JavaScript, and Node.js functionality, with active communication between the client and the server.
 
 Baseline Requirements
 ---
 
+There are a range of application areas and possibilities that meet these baseline requirements.
+Try to make your application do something useful! A todo list, storing / retrieving high scores for a very simple game... have a little fun with it.
+
 Your application is required to implement the following functionalities:
 
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data, except passwords, associated with a logged-in user
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their username / account. 
-  The authentication is to be implemented using [Passport - Local Strategy](https://www.passportjs.org/packages/passport-local/) 
-  which authenticates using a simple username and password. For the purposes of this assignment, you do not have to encrypt
-  the password.
-- Persistent data storage in between server sessions using [MongoDB](https://www.MongoDB.com/cloud/atlas) (you *must* use MongoDB for this assignment). You can use either the [official MongoDB node.js library](https://www.npmjs.com/package/MongoDB) or use the [Mongoose library](https://www.npmjs.com/package/mongoose), which enables you to define formal schemas for your database. Please be aware that the course staff cannot provide in-depth support for use of Mongoose.  
-- Use of a CSS style framework (see possibilities at the beginning of this assignment). 
-  This should do the bulk of your styling/CSS for you and be appropriate to your application. 
-  For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
+- a `Server` which not only serves files, but also maintains a tabular dataset with 3 or more fields related to your application
+- a `Results` functionality which shows the entire dataset residing in the server's memory
+- a `Form/Entry` functionality which allows a user to add or delete data items residing in the server's memory
+- a `Server Logic` which, upon receiving new or modified "incoming" data, includes and uses a function that adds at least one additional derived field to this incoming data before integrating it with the existing dataset
+- the `Derived field` for a new row of data must be computed based on fields already existing in the row.
+  For example, a `todo` dataset with `task`, `priority`, and `creation_date` may generate a new field `deadline` by looking at `creation_date` and `priority`
 
-Your application is required to demonstrate the use of the following concepts:  
+Your application is required to demonstrate the use of the following concepts:
 
-HTML:  
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignment, which required the display of all data in memory on the server.
+HTML (4 pts each, total of 16 pts):
+- One or more [HTML Forms](https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms), with any combination of form tags appropriate for the user input portion of the application
+- A results page displaying all data currently available on the server. You will most likely use a `<table>` tag for this, but `<ul>` or `<ol>` could also work and might be simpler to work with. Alternatively, you can create a single-page app (see Technical Achievements) but this is not a requirement.
+- All pages should [validate](https://validator.w3.org)
+- If your app contains multiple pages, they should all be accessible from the homepage (index.html)
 
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is 
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create 
-new user accounts upon login if none exist, however, you must alert your users to this fact.  
+CSS (4 pts each, total of 16 pts):
+- CSS styling of the primary visual elements in the application
+- Various CSS Selector functionality must be demonstrated:
+    - Element selectors
+    - ID selectors
+    - Class selectors
+- CSS positioning and styling of the primary visual elements in the application:
+    - Use of either a CSS grid or flexbox for layout
+    - Rules defining fonts for all text used; be deliberate! Be sure to use a web safe font or a font from a web service like [Google Fonts](http://fonts.google.com/)
+- CSS defined in a maintainable, readable form, in external stylesheets
 
-CSS:  
-- CSS styling should primarily be provided by your chosen template/framework. 
-Oftentimes a great deal of care has been put into designing CSS templates; 
-don't override their stylesheets unless you are extremely confident in your graphic design capabilities. 
-The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
+Client-Side JavaScript (12 pts):
+- At minimum, a small amount of front-end JavaScript to get / fetch data from the server; a sample is provided in this repository.
 
-JavaScript:  
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. 
-See the [previous assignment](https://github.com/cs4241-c25/a2-shortstack) for reference.
-
-Node.js:  
-- A server using Express and a persistent database (MongoDB).
-
-General:  
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests 
-using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment. 
+Server-Side Node.js (16 pts):
+- An HTTP Server that delivers all necessary files and data for the application, and also creates the required Derived Fields in your data.
+  A starting point is provided in this repository.
 
 Deliverables
 ---
 
-Do the following to complete this assignment:
+Do the following to complete this assignment and achieve a base grade of 85%:
 
-1. Accept the A3 assignment which should automatically create a private repository for you.
-2. Implement your project with the above requirements. Consider beginning by converting your A2 
-   assignment. First, change the server to use express. Then, modify the server to use MongoDB 
-   instead of storing data locally. Last but not least, implement user accounts and login using
-   Passport Local Strategy. User accounts and login is a difficult part of this assignment, so
-   budget your time accordingly. 
-3. Ensure that your project has the proper naming scheme as previous assignments except starting
-   with "a3-" so we can find it. 
-4. Modify the README to the specifications below.
-5. Push your final application to your assignment GitHub repository before the deadline at 11:59pm. 
-6. Create an empty, temporary, `public` GitHub repository. Push your final application to this
-   repository. 
-7. Import from this public repository to deploy on Glitch (unless completing the 
-   alternative server technical achievement described below). Fill in the appropriate fields in 
-   your package.json file. Delete the public repository after the import has been successful. 
-8. Test your project to make sure that when someone goes to your main page on Glitch (or an 
-   alternative server), it displays correctly.
+1. (5 pts) Accept this A2 assignment have Git Classroom generate your private repository. This repo contains some starter code that may be used or discarded as needed.
+2. (60 pts - see above) Implement your project with the above requirements.
+3. Test your project to make sure that when someone goes to your main page, it displays correctly.
+4. (5 pts) Temporarily make your GitHub repo public, deploy your project to Glitch, and fill in the appropriate fields in your package.json file. Make your repo private again!
+5. (5 pts) Ensure that your project has the proper naming scheme `a2-yourGithubUsername` so we can find it.
+6. (5 pts) Modify the README to the specifications below, and delete all of the instructions originally found in this README.
+7. (5 pts) Push your final version of your local repository to your GitHub repo before the deadline.
 
 Achievements
 ---
 
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the 
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%. 
-These are recommended achievements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README, 
-why it was challenging, and how many points you think the achievement should be worth. 
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
+Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the assignment to your personal interests. These are recommended achievements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README and why it was challenging. ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM. Remember, the highest grade you can get on any individual assignment is a 100%.
 
 *Technical*
-- (10 points) Implement GitHub authentication using either  [Passport GitHub1](https://www.passportjs.org/packages/passport-github)
-  or [Passport GitHub2](https://www.passportjs.org/packages/passport-github2). 
-  *You must either use GitHub authentication or provide a username/password to access a dummy account*. 
-  Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. 
-  Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHIEVEMENT OFFERED IN WEBWARE.
-  It is highly recommended that you complete the required Passport Local Strategy first and then attempt this!
-- (5 points) Instead of Glitch, host your site on a different service like [Vercel](https://vercel.com/) or [Heroku](https://www.heroku.com).
-  Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? 
-  What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.
-- (up to 5 points) List up to five Express middleware packages you used and a short (one sentence) summary of what each 
-  one does. THESE MUST BE SEPARATE PACKAGES THAT YOU INSTALL VIA NPM, NOT THE ONES INCLUDED WITH EXPRESS. So express.json
-  and express.static don't count here. For a starting point on middleware, see [this list](https://expressjs.com/en/resources/middleware.html).
+- (5 points) Create a single-page app that both provides a form for users to submit data and always shows the current state of the server-side data. To put it another way, when the user submits data, the server should respond sending back the updated data (including the derived field calculated on the server) and the client should then update its data display.
+
+- (5 points) In addition to a form enabling adding and deleting data on the server, also add the ability to modify existing data.
 
 *Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), 
-  Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/),
-  [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/).
-  *Note that all twelve must require active work on your part*. 
-  For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips 
-  to follow because you're effectively getting it "for free" without having to actively change anything about your site. 
-  Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-  List each tip that you followed and describe what you did to follow it in your site.
-- (10 points) Describe how your site uses the CRAP principles in the [Non-Designer's Design Book](https://learning.oreilly.com/library/view/the-non-designers-design/9780321563088/)
-  Make sure you are logged in to Canvas before clicking on the book's link.
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
+- (5 points per person, with a max of 10 points) Test your user interface with other students in the class. Define a specific task for them to complete (ideally something short that takes <10 minutes), and then use the [think-aloud protocol](https://en.wikipedia.org/wiki/Think_aloud_protocol) to obtain feedback on your design (talk-aloud is also fine). Important considerations when designing your study:
+
+1. Make sure you start the study by clearly stating the task that you expect your user to accomplish.
+2. You shouldn't provide any verbal instructions on how to use your interface / accomplish the task you give them. Make sure that your interface is clear enough that users can figure it out without any instruction, or provide text instructions from within the interface itself.
+3. If users get stuck to the point where they give up, you can then provide instruction so that the study can continue, but make sure to discuss this in your README. You won't lose any points for this... all feedback is good feedback!
+
+You'll need to use some type of collaborative software like Zoom that will enable you both to see the test subject's screen and listen to their voice as they describe their thoughts, or conduct the studies in person. After completing each study, briefly (one to two sentences for each question) address the following in your README:
+
+1. Provide the last name of each student you conduct the evaluation with.
+2. What problems did the user have with your design?
+3. What comments did they make that surprised you?
+4. What would you change about the interface based on their feedback?
+
+*You do not need to actually make changes based on their feedback*. This achievement is designed to help gain experience testing user interfaces. If you run two user studies, you should answer two sets of questions.
 
 Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
 ---
 
 ## Your Web Application Title
-
-your glitch (or alternative server) link e.g. http://a3-wilson-wong.glitch.me
-
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
-
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
+Include a very brief summary of your project here. Be sure to include the CSS positioning technique you used, and any required instructions to use your application.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- **Tech Achievement 1**: Using a combination of...
 
-## Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+### Design/Evaluation Achievements
+- **Design Achievement 1**: 
