@@ -10,10 +10,57 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
-<form>
-    <label for="yourname">Your Name: </label><input type="text" id="yourname" value="your name here">
-    <button>submit</button>
-</form>
+<div>
+    <h1>Restaurant Log</h1>
+</div>
+
+
+<div style="display: flex; flex-direction:row; ">
+    <form>
+        <div>
+            <div>
+                <label for="name">Restaurant Name: </label>
+                <input type="text" id="name" style = "color: gray" value="Input Restaurant Name:">
+            </div>
+            <div>
+                <label for="foodtype">Type of Cuisine: </label>
+                <select name="foodtype" id="foodtype">
+                    <option value="italian">Italian</option>
+                    <option value="american">American</option>
+                    <option value="Mediterranean">Mediterranean</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="thai">Thai</option>
+                    <option value="mexican">Mexican</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label for="date">Date Visited: </label>
+                <input type="text" id="date" style = "color: gray" value="MM/DD/YYYY">
+            </div>
+
+        </div>
+
+        <div>
+            <label for="rating">Rating: </label>
+            <input type="text" id="rating" style = "color: gray" value="1-10">
+
+            <label for="review">Review:</label>
+            <textarea id="review" name="review" rows="4" cols="40"></textarea>
+        </div>
+
+    </form>
+</div>
+
+<br><br>
+
+<div style="display: flex; justify-content: center;">
+    <button>Submit</button>
+</div>
+
+
+
 
 </body>
 </html>
