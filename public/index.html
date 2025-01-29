@@ -14,15 +14,20 @@
     <h1>Restaurant Log</h1>
 </div>
 
+<hr style="width:60%">
 
-<div style="display: flex; flex-direction:row; ">
+
+<div style="display: flex; flex-direction:row; justify-content:center; ">
     <form>
-        <div>
-            <div>
+        <div style=" display:flex; align-items: center; justify-content:space-evenly;">
+
+            <div style = "margin: 20px;">
                 <label for="name">Restaurant Name: </label>
                 <input type="text" id="name" style = "color: gray" value="Input Restaurant Name:">
+
             </div>
-            <div>
+
+            <div style = "margin: 20px;">
                 <label for="foodtype">Type of Cuisine: </label>
                 <select name="foodtype" id="foodtype">
                     <option value="italian">Italian</option>
@@ -35,19 +40,28 @@
                     <option value="other">Other</option>
                 </select>
             </div>
-            <div>
+
+
+        </div>
+
+        <div style=" display:flex; align-items: center; justify-content: space-evenly">
+
+            <div style = "margin: 20px; ">
                 <label for="date">Date Visited: </label>
                 <input type="text" id="date" style = "color: gray" value="MM/DD/YYYY">
             </div>
 
+            <div>
+                <label for="rating">Rating: </label>
+                <input type="text" id="rating" style = "color: gray" value="1-10">
+            </div>
         </div>
 
-        <div>
-            <label for="rating">Rating: </label>
-            <input type="text" id="rating" style = "color: gray" value="1-10">
-
-            <label for="review">Review:</label>
-            <textarea id="review" name="review" rows="4" cols="40"></textarea>
+        <div style=" display:flex; align-items: center; justify-content: space-evenly">
+            <div style="display: flex; align-items: center; ">
+                <label for="review">Review: </label>
+                <textarea id="review" name="review" rows="4" cols="50"></textarea>
+            </div>
         </div>
 
     </form>
@@ -55,11 +69,27 @@
 
 <br><br>
 
-<div style="display: flex; justify-content: center;">
+<div style="display: flex; justify-content: space-evenly">
     <button>Submit</button>
 </div>
 
+<hr>
+<h2>Entries: </h2>
+<br>
 
+<div style="width: 100%; ">
+    <table style="width: 100%;  border-collapse: collapse; text-align: center; border-style: solid; border-top-color: navy; border-bottom-color: navy;  ">
+        <thead>
+        <tr style="background-color: gray; color: white; height:40px; font-size: 25px; ">
+            <th>Restaurant</th>
+            <th>Cuisine</th>
+            <th>Date</th>
+            <th>Rating</th>
+            <th>Review</th>
+        </tr>
+        </thead>
+    </table>
+</div>
 
 
 </body>

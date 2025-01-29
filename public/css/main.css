@@ -13,3 +13,15 @@ h1{
     justify-content: center;
     font-size: 70px;
 }
+
+h2{
+    margin: 0;
+    padding: 0;
+    color: navy;
+    font-size: 40px;
+}
+
+tbody{
+    background-color: lightgray;
+    color: navy;
+}
