@@ -39,12 +39,16 @@ const submit = async function( event ) {
 
     updatedData.forEach(item => {
         const row = document.createElement("tr");
+
+        const returnValue = item.rating > 5 ? "Yes" : "No";  // Set "Yes" if rating > 5, else "No"
+
         row.innerHTML = `
             <td>${item.name}</td>
             <td>${item.foodtype}</td>
             <td>${item.date}</td>
             <td>${item.rating}</td>
             <td>${item.review}</td>
+            <td>${returnValue}</td>
         `;
         tableBody.appendChild(row);
     });
@@ -55,5 +59,7 @@ window.onload = function() {
 
     const form = document.querySelector("#restaurantForm");
     form.addEventListener('submit', submit);
-    console.log('addevent listener: submit');
+
+
+
 }
