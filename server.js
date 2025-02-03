@@ -21,6 +21,8 @@ const server = http.createServer( function( request,response ) {
         handleGet( request, response )
     }else if( request.method === "POST" && request.url === "/submit" ){
         handlePost( request, response )
+    }else if (request.method === "POST" && request.url === "/clear") {
+        handleClear(request, response);
     }
 
     // The following shows the requests being sent to the server
@@ -60,7 +62,21 @@ const handlePost = function( request, response ) {
         response.end(JSON.stringify(appdata))
     })
 }
+const handleClear = function(request, response) {
+    console.log("Received POST request for /clear");
 
+    // Clear the appdata array
+    appdata.length = 0;
+    appdata.push(
+        { "name": "Via", "foodtype": "Italian", "date": "01/02/2025", "rating": 8, "review": "I loved it!" },
+        { "name": "Baba Sushi", "foodtype": "Japanese", "date": "01/03/2025", "rating": 10, "review": "Best Sushi!" },
+        { "name": "Chipotle", "foodtype": "Mexican", "date": "01/15/2025", "rating": 10, "review": "Really quick, great food." }
+    );
+
+    // Send back the empty array as the response
+    response.writeHead(200, "OK", { "Content-Type": "application/json" });
+    response.end(JSON.stringify(appdata));
+}
 
 const sendFile = function( response, filename ) {
     const type = mime.getType( filename )

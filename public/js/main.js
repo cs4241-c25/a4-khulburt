@@ -54,11 +54,36 @@ const submit = async function( event ) {
     });
 }
 
+const clearData = async function(event) {
+    // Prevent default form submission behavior
+    event.preventDefault();
+
+    // Send a request to clear the data on the server
+    const response = await fetch("/clear", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+
+    // Get the response (which should be the empty array)
+    const updatedData = await response.json();
+
+    // Clear the table
+    const tableBody = document.getElementById("reviewTableBody");
+    tableBody.innerHTML = '';
+
+}
+
 window.onload = function() {
     console.log('Page Loaded');
 
     const form = document.querySelector("#restaurantForm");
     form.addEventListener('submit', submit);
+
+    const clearButton = document.getElementById("clearButton");
+    clearButton.addEventListener('click', clearData);
+
 
 
 
