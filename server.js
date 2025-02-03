@@ -1,3 +1,4 @@
+
 const http = require( "node:http" ),
     fs   = require( "node:fs" ),
     // IMPORTANT: you must run `npm install` in the directory for this assignment
@@ -9,16 +10,16 @@ const http = require( "node:http" ),
     port = 3000
 
 const appdata = [
-    { "model": "toyota", "year": 1999, "mpg": 23 },
-    { "model": "honda", "year": 2004, "mpg": 30 },
-    { "model": "ford", "year": 1987, "mpg": 14}
+    { "name": "Via", "foodtype": "Italian", "date": "01/02/2025", "rating": 8, "review": "I loved it!"  },
+    { "name": "Baba Sushi", "foodtype": "Japanese", "date": "01/03/2025", "rating": 10, "review": "Best Sushi!"  },
+    { "name": "Chipotle", "foodtype": "Mexican", "date": "01/15/2025", "rating": 10, "review": "Really quick, great food."  }
 ]
 
 // let fullURL = ""
 const server = http.createServer( function( request,response ) {
     if( request.method === "GET" ) {
         handleGet( request, response )
-    }else if( request.method === "POST" ){
+    }else if( request.method === "POST" && request.url === "/submit" ){
         handlePost( request, response )
     }
 
@@ -38,6 +39,7 @@ const handleGet = function( request, response ) {
 }
 
 const handlePost = function( request, response ) {
+    console.log("Received POST request for /submit");
     let dataString = ""
 
     request.on( "data", function( data ) {
@@ -45,12 +47,17 @@ const handlePost = function( request, response ) {
     })
 
     request.on( "end", function() {
-        console.log( JSON.parse( dataString ) )
+        console.log("Received data:", JSON.parse(dataString))
 
-        // ... do something with the data here and at least generate the derived data
+        const newEntry = JSON.parse(dataString);
+
+        // Add the new entry to the appdata array
+        appdata.push(newEntry);
+
+        console.log("New entry added:", newEntry);
 
         response.writeHead( 200, "OK", {"Content-Type": "text/plain" })
-        response.end("text")
+        response.end(JSON.stringify(appdata))
     })
 }
 
@@ -79,4 +86,3 @@ const sendFile = function( response, filename ) {
 // process.env.PORT references the port that Glitch uses
 // the following line will either use the Glitch port or one that we provided
 server.listen( process.env.PORT || port )
-

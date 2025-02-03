@@ -7,20 +7,53 @@ const submit = async function( event ) {
     // remains to this day
     event.preventDefault()
 
-    const input = document.querySelector( "#yourname" ),
-        json = { yourname: input.value },
-        body = JSON.stringify( json )
+    // Collect values from the form fields
+    const inputName = document.querySelector("#name").value;
+    const inputFoodType = document.querySelector("#foodtype").value;
+    const inputDate = document.querySelector("#date").value;
+    const inputRating = document.querySelector("#rating").value;
+    const inputReview = document.querySelector("#review").value;
+
+    const json = {
+        name: inputName,
+        foodtype: inputFoodType,
+        date: inputDate,
+        rating: inputRating,
+        review: inputReview
+    };
+
+    const body = JSON.stringify(json);
 
     const response = await fetch( "/submit", {
         method:'POST',
-        body
+        body: body,
+        headers: {
+            "Content-Type": "application/json"
+        }
     })
 
-    const text = await response.text()
-    console.log( "text:", text )
+    const updatedData = await response.json();
+
+    const tableBody = document.getElementById("reviewTableBody");
+    tableBody.innerHTML = '';
+
+    updatedData.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.foodtype}</td>
+            <td>${item.date}</td>
+            <td>${item.rating}</td>
+            <td>${item.review}</td>
+        `;
+        tableBody.appendChild(row);
+    });
 }
 
 window.onload = function() {
-    const button = document.querySelector("button");
-    button.onclick = submit;
+    console.log('Page Loaded');
+
+    const form = document.querySelector("#restaurantForm");
+    form.addEventListener('submit', submit);
+    console.log('addevent listener: submit');
 }

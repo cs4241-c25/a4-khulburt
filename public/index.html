@@ -18,7 +18,7 @@
 
 
 <div style="display: flex; flex-direction:row; justify-content:center; ">
-    <form>
+    <form id = "restaurantForm">
         <div style=" display:flex; align-items: center; justify-content:space-evenly;">
 
             <div style = "margin: 20px;">
@@ -63,15 +63,16 @@
                 <textarea id="review" name="review" rows="4" cols="50"></textarea>
             </div>
         </div>
+        <br><br>
+
+        <div style="display: flex; justify-content: space-evenly">
+            <button>Submit</button>
+        </div>
 
     </form>
 </div>
 
-<br><br>
 
-<div style="display: flex; justify-content: space-evenly">
-    <button>Submit</button>
-</div>
 
 <hr>
 <h2>Entries: </h2>
@@ -88,6 +89,12 @@
             <th>Review</th>
         </tr>
         </thead>
+        <tbody id="reviewTableBody">
+        <tr>
+
+        </tr>
+
+        </tbody>
     </table>
 </div>
 
