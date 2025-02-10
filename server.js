@@ -6,15 +6,37 @@ const http = require( "node:http" ),
     // However, Glitch will install it automatically by looking in your package.json
     // file.
     mime = require( "mime" ),
+    { MongoClient } = require("mongodb"),
     dir  = "public/",
     port = 3000
 
+const express = require('express');
+const app = express();
+const session = require("express-session");
 
-const appdata = [
-    { "name": "Via", "foodtype": "Italian", "date": "01/02/2025", "rating": 8, "review": "I loved it!"  },
-    { "name": "Baba Sushi", "foodtype": "Japanese", "date": "01/03/2025", "rating": 10, "review": "Best Sushi!"  },
-    { "name": "Chipotle", "foodtype": "Mexican", "date": "01/15/2025", "rating": 10, "review": "Really quick, great food."  }
-]
+app.use(express.static("public"));
+app.use(express.json())
+
+const url = "mongodb+srv://khulburt12:chipps12@webwareproject.8cs64.mongodb.net/";
+const dbconnect = new MongoClient(url);
+
+async function connectDB() {
+    try {
+        await client.connect();
+        const db = client.db("restaurantLogs"); // Change this to your database name
+        collection = db.collection("formInputs"); // Change this to your collection name
+        console.log("Connected to MongoDB!");
+    } catch (err) {
+        console.error("MongoDB Connection Error:", err);
+    }
+}
+connectDB();
+
+//const appdata = [
+    //{ "name": "Via", "foodtype": "Italian", "date": "01/02/2025", "rating": 8, "review": "I loved it!"  },
+    //{ "name": "Baba Sushi", "foodtype": "Japanese", "date": "01/03/2025", "rating": 10, "review": "Best Sushi!"  },
+    //{ "name": "Chipotle", "foodtype": "Mexican", "date": "01/15/2025", "rating": 10, "review": "Really quick, great food."  }
+//]
 
 // let fullURL = ""
 const server = http.createServer( function( request,response ) {
@@ -31,17 +53,21 @@ const server = http.createServer( function( request,response ) {
     // console.log( fullURL );
 })
 
-const handleGet = function( request, response ) {
+async function handleGet( request, response ) {
     const filename = dir + request.url.slice( 1 )
 
     if( request.url === "/" ) {
         sendFile( response, "public/index.html" )
+    }else if(request.url === "/getData"){
+        const allData = await collection.find({}).toArray();
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(JSON.stringify(allData));
     }else{
-        sendFile( response, filename )
+        sendFile(response, dir + request.url.slice(1));
     }
 }
 
-const handlePost = function( request, response ) {
+async function handlePost( request, response ) {
     console.log("Received POST request for /submit");
     let dataString = ""
 
@@ -54,29 +80,24 @@ const handlePost = function( request, response ) {
 
         const newEntry = JSON.parse(dataString);
 
-        // Add the new entry to the appdata array
-        appdata.push(newEntry);
+        collection.insertOne(newEntry);
+        console.log("New entry added to MongoDB:", newEntry);
 
-        console.log("New entry added:", newEntry);
+        const allData = collection.find({}).toArray();
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(JSON.stringify(allData));
 
-        response.writeHead( 200, "OK", {"Content-Type": "text/plain" })
-        response.end(JSON.stringify(appdata))
     })
 }
 const handleClear = function(request, response) {
     console.log("Received POST request for /clear");
 
     // Clear the appdata array
-    appdata.length = 0;
-    appdata.push(
-        { "name": "Via", "foodtype": "Italian", "date": "01/02/2025", "rating": 8, "review": "I loved it!" },
-        { "name": "Baba Sushi", "foodtype": "Japanese", "date": "01/03/2025", "rating": 10, "review": "Best Sushi!" },
-        { "name": "Chipotle", "foodtype": "Mexican", "date": "01/15/2025", "rating": 10, "review": "Really quick, great food." }
-    );
+    collection.deleteMany({});
+    console.log("MongoDB collection cleared.");
 
-    // Send back the empty array as the response
-    response.writeHead(200, "OK", { "Content-Type": "application/json" });
-    response.end(JSON.stringify(appdata));
+    response.writeHead(200, { "Content-Type": "application/json" });
+    response.end(JSON.stringify([]));
 }
 
 const sendFile = function( response, filename ) {

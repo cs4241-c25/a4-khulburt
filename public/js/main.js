@@ -33,14 +33,57 @@ const submit = async function( event ) {
     })
 
     const updatedData = await response.json();
+    updateTable(updatedData);
 
+    document.querySelector("#restaurantForm").reset();
+}
+
+const clearData = async function(event) {
+    event.preventDefault();
+
+    try {
+        const response = await fetch("/clear", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) throw new Error("Failed to clear data");
+
+        // Clear the table after clearing data
+        updateTable([]);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};
+
+const fetchData = async function() {
+    try {
+        const response = await fetch("/getData", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch data");
+
+        const data = await response.json();
+        updateTable(data);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};
+
+const updateTable = function(data) {
     const tableBody = document.getElementById("reviewTableBody");
-    tableBody.innerHTML = '';
+    tableBody.innerHTML = "";
 
-    updatedData.forEach(item => {
+    data.forEach(item => {
         const row = document.createElement("tr");
 
-        const returnValue = item.rating > 5 ? "Yes" : "No";  // Set "Yes" if rating > 5, else "No"
+        const returnValue = item.rating > 5 ? "Yes" : "No";
 
         row.innerHTML = `
             <td>${item.name}</td>
@@ -52,39 +95,21 @@ const submit = async function( event ) {
         `;
         tableBody.appendChild(row);
     });
-}
-
-const clearData = async function(event) {
-    // Prevent default form submission behavior
-    event.preventDefault();
-
-    // Send a request to clear the data on the server
-    const response = await fetch("/clear", {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-
-    // Get the response (which should be the empty array)
-    const updatedData = await response.json();
-
-    // Clear the table
-    const tableBody = document.getElementById("reviewTableBody");
-    tableBody.innerHTML = '';
-
-}
+};
 
 window.onload = function() {
-    console.log('Page Loaded');
+    console.log("Page Loaded");
+
+    // Load existing data when the page loads
+    fetchData();
 
     const form = document.querySelector("#restaurantForm");
-    form.addEventListener('submit', submit);
+    form.addEventListener("submit", submit);
 
     const clearButton = document.getElementById("clearButton");
-    clearButton.addEventListener('click', clearData);
+    clearButton.addEventListener("click", clearData);
 
+    const refreshButton = document.getElementById("refreshButton");
+    refreshButton.addEventListener("click", fetchData);
+};
 
-
-
-}
