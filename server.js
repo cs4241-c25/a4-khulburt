@@ -9,6 +9,7 @@ const http = require( "node:http" ),
     dir  = "public/",
     port = 3000
 
+
 const appdata = [
     { "name": "Via", "foodtype": "Italian", "date": "01/02/2025", "rating": 8, "review": "I loved it!"  },
     { "name": "Baba Sushi", "foodtype": "Japanese", "date": "01/03/2025", "rating": 10, "review": "Best Sushi!"  },
