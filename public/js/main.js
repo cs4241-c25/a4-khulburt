@@ -1,10 +1,7 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
-const submit = async function( event ) {
-    // stop form submission from trying to load
-    // a new .html page for displaying results...
-    // this was the original browser behavior and still
-    // remains to this day
-    event.preventDefault()
+const submit = async function(event) {
+    // stop form submission from trying to load a new .html page for displaying results...
+    event.preventDefault();
 
     // Collect values from the form fields
     const inputName = document.querySelector("#name").value;
@@ -25,19 +22,19 @@ const submit = async function( event ) {
 
     const body = JSON.stringify(json);
 
-    const response = await fetch( "/submit", {
-        method:'POST',
+    const response = await fetch("/submit", {
+        method: 'POST',
         body: body,
         headers: {
             "Content-Type": "application/json"
         }
-    })
+    });
 
     const updatedData = await response.json();
     updateTable(updatedData);
 
     document.querySelector("#restaurantForm").reset();
-}
+};
 
 const clearData = async function(event) {
     event.preventDefault();
@@ -70,10 +67,13 @@ const clearData = async function(event) {
 const fetchData = async function() {
     try {
         const user = localStorage.getItem("user");
+
+        // Check if the user is authenticated before fetching data
         if (!user) {
             window.location.href = "loginPage.html";
             return;
         }
+
         const response = await fetch(`/getData?username=${user}`, {
             method: "GET",
             headers: {
@@ -114,7 +114,15 @@ const updateTable = function(data) {
 window.onload = function() {
     console.log("Page Loaded");
 
-    // Load existing data when the page loads
+    const user = localStorage.getItem("user");
+
+    if (!user) {
+        if (window.location.pathname !== "/loginPage.html") {
+            window.location.href = "loginPage.html";
+        }
+        return;
+    }
+
     fetchData();
 
     const form = document.querySelector("#restaurantForm");
