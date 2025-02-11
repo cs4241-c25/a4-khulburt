@@ -22,9 +22,9 @@ const dbconnect = new MongoClient(url);
 
 async function connectDB() {
     try {
-        await client.connect();
-        const db = client.db("restaurantLogs"); // Change this to your database name
-        collection = db.collection("formInputs"); // Change this to your collection name
+        await dbconnect.connect();
+        const db = dbconnect.db("restaurantLogs");
+        collection = db.collection("formInputs");
         console.log("Connected to MongoDB!");
     } catch (err) {
         console.error("MongoDB Connection Error:", err);
@@ -32,11 +32,6 @@ async function connectDB() {
 }
 connectDB();
 
-//const appdata = [
-    //{ "name": "Via", "foodtype": "Italian", "date": "01/02/2025", "rating": 8, "review": "I loved it!"  },
-    //{ "name": "Baba Sushi", "foodtype": "Japanese", "date": "01/03/2025", "rating": 10, "review": "Best Sushi!"  },
-    //{ "name": "Chipotle", "foodtype": "Mexican", "date": "01/15/2025", "rating": 10, "review": "Really quick, great food."  }
-//]
 
 // let fullURL = ""
 const server = http.createServer( function( request,response ) {
@@ -48,20 +43,26 @@ const server = http.createServer( function( request,response ) {
         handleClear(request, response);
     }
 
-    // The following shows the requests being sent to the server
-    // fullURL = `http://${request.headers.host}${request.url}`
-    // console.log( fullURL );
 })
 
 async function handleGet( request, response ) {
     const filename = dir + request.url.slice( 1 )
 
     if( request.url === "/" ) {
-        sendFile( response, "public/index.html" )
+        sendFile( response, "public/loginPage.html" )
     }else if(request.url === "/getData"){
-        const allData = await collection.find({}).toArray();
+        const urlParams = new URLSearchParams(request.url.slice(8)); // Extract query parameters
+        const username = urlParams.get("username");
+
+        if (!username) {
+            response.writeHead(400, { "Content-Type": "application/json" });
+            response.end(JSON.stringify({ error: "Username is required" }));
+            return;
+        }
+
+        const userData = await collection.find({ username }).toArray();
         response.writeHead(200, { "Content-Type": "application/json" });
-        response.end(JSON.stringify(allData));
+        response.end(JSON.stringify(userData));
     }else{
         sendFile(response, dir + request.url.slice(1));
     }
@@ -75,30 +76,53 @@ async function handlePost( request, response ) {
         dataString += data
     })
 
-    request.on( "end", function() {
+    request.on( "end", async function() {
         console.log("Received data:", JSON.parse(dataString))
 
         const newEntry = JSON.parse(dataString);
 
-        collection.insertOne(newEntry);
+        await collection.insertOne(newEntry);
         console.log("New entry added to MongoDB:", newEntry);
 
-        const allData = collection.find({}).toArray();
+        const allData = await collection.find({username: newEntry.username}).toArray();
         response.writeHead(200, { "Content-Type": "application/json" });
         response.end(JSON.stringify(allData));
 
     })
 }
-const handleClear = function(request, response) {
+
+const handleClear = async function(request, response) {
     console.log("Received POST request for /clear");
 
-    // Clear the appdata array
-    collection.deleteMany({});
-    console.log("MongoDB collection cleared.");
+    let dataString = "";
+    request.on("data", function(data) {
+        dataString += data;
+    });
 
-    response.writeHead(200, { "Content-Type": "application/json" });
-    response.end(JSON.stringify([]));
-}
+    request.on("end", async function() {
+        const { username } = JSON.parse(dataString);  // Get username from the request body
+
+        if (!username) {
+            response.writeHead(400, { "Content-Type": "application/json" });
+            response.end(JSON.stringify({ error: "Username not provided" }));
+            return;
+        }
+
+        try {
+            // Delete all entries for the specific user
+            const result = await collection.deleteMany({ username: username });
+
+            console.log(`Deleted ${result.deletedCount} entries for user: ${username}`);
+
+            response.writeHead(200, { "Content-Type": "application/json" });
+            response.end(JSON.stringify([]));  // Return empty data after clearing
+        } catch (error) {
+            console.error("Error deleting data:", error);
+            response.writeHead(500, { "Content-Type": "application/json" });
+            response.end(JSON.stringify({ error: "Failed to delete data" }));
+        }
+    });
+};
 
 const sendFile = function( response, filename ) {
     const type = mime.getType( filename )
@@ -122,6 +146,4 @@ const sendFile = function( response, filename ) {
     })
 }
 
-// process.env.PORT references the port that Glitch uses
-// the following line will either use the Glitch port or one that we provided
 server.listen( process.env.PORT || port )

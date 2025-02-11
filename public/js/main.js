@@ -1,5 +1,4 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
-
 const submit = async function( event ) {
     // stop form submission from trying to load
     // a new .html page for displaying results...
@@ -13,8 +12,10 @@ const submit = async function( event ) {
     const inputDate = document.querySelector("#date").value;
     const inputRating = document.querySelector("#rating").value;
     const inputReview = document.querySelector("#review").value;
+    const user = localStorage.getItem("user");
 
     const json = {
+        username: user,
         name: inputName,
         foodtype: inputFoodType,
         date: inputDate,
@@ -42,11 +43,19 @@ const clearData = async function(event) {
     event.preventDefault();
 
     try {
+        const user = localStorage.getItem("user");
+
+        if (!user) {
+            window.location.href = "loginPage.html";
+            return;
+        }
+
         const response = await fetch("/clear", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
-            }
+            },
+            body: JSON.stringify({ username: user })  // Send username to the server
         });
 
         if (!response.ok) throw new Error("Failed to clear data");
@@ -60,7 +69,12 @@ const clearData = async function(event) {
 
 const fetchData = async function() {
     try {
-        const response = await fetch("/getData", {
+        const user = localStorage.getItem("user");
+        if (!user) {
+            window.location.href = "loginPage.html";
+            return;
+        }
+        const response = await fetch(`/getData?username=${user}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
