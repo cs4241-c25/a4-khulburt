@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>CS4241 Assignment 2</title>
+    <title>CS4241 Assignment 3</title>
     <meta charset="utf-8">
     <script src="js/main.js"></script>
     <link rel="stylesheet" href="css/main.css">
@@ -13,8 +13,17 @@
 <div>
     <h1>Restaurant Log</h1>
 </div>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const user = localStorage.getItem("user");
+        if (!user) {
+            window.location.href = "loginPage.html";
+        }
+    });
+</script>
 <hr style="width:60%">
+
+<a href="loginPage.html" style="color: white; text-decoration: none; margin-left:10px"> Logout</a>
 
 
 <div style="display: flex; flex-direction:row; justify-content:center; ">
