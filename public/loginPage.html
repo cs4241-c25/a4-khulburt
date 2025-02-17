@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>CS4241 Assignment 3</title>
+    <title>CS4241 Assignment 4</title>
     <meta charset="utf-8">
-    <script src="js/main.js"></script>
+    <script src="jsx/main.jsx"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/main.css">
 
@@ -29,7 +29,14 @@
             Login
         </button>
     </form>
+
+    <div class = "text-center text-blue-700"> or </div>
+
+    <div class ="w-full bg-blue-300 text-blue-700 text-center font-bold py-2 px-4 rounded-lg hover:bg-blue-400 transition">
+        <button id="githubLogin">Login with GitHub</button>
+    </div>
 </div>
+
 
 <script>
     document.getElementById("loginForm").addEventListener("submit", function(event) {

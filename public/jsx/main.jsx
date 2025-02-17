@@ -133,5 +133,10 @@ window.onload = function() {
 
     const refreshButton = document.getElementById("refreshButton");
     refreshButton.addEventListener("click", fetchData);
+
+    document.getElementById("githubLogin").addEventListener("click", () => {
+        window.location.href = "http://localhost:3000/auth/github";
+    });
+
 };
 

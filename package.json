@@ -1,21 +1,25 @@
 {
-  "name": "a3-khulburt",
+  "name": "a4-khulburt",
   "version": "0.1.0",
-  "description": "WPI CS4241-C25 Assignment A2",
+  "description": "WPI CS4241-C25 Assignment A4",
   "author": "Kendall Hulburt",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "@material-tailwind/react": "^2.1.10",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "mime": "^2.4.4",
-    "mongodb": "^6.13.0"
+    "mongodb": "^6.13.0",
+    "next-auth": "^4.24.11",
+    "passport": "^0.7.0",
+    "passport-github2": "^0.1.12"
   },
   "engines": {
     "node": "16.x"
   },
-  "main": "app.js",
+  "main": "app.jsx",
   "license": "ISC"
 }

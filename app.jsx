@@ -1,7 +1,6 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
-const session = require("express-session");
 
 app.use(express.static("public"));
 app.use(express.json())
