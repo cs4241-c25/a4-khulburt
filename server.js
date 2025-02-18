@@ -4,7 +4,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
-const { MongoClient } = require('mongodb');
+const MongoClient = require('mongodb').MongoClient;
 const mime = require('mime');
 const fs = require('fs');
 const http = require('http');
@@ -13,9 +13,18 @@ const dotenv = require('dotenv').config();
 const app = express();
 const port = 3000;
 
+app.use(express.static("public"));
+app.use(express.json())
+
 // Database setup
 const url = 'mongodb+srv://khulburt12:chipps12@webwareproject.8cs64.mongodb.net/';
 const dbconnect = new MongoClient(url);
+
+async function run(){
+    await dbconnect.connect().then(()=> console.log("Connected!"));
+}
+
+const appRun = run();
 
 let collection;
 
@@ -49,7 +58,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('public/build'));
 
 // Passport GitHub Strategy setup
 passport.use(
@@ -91,6 +100,14 @@ app.get('/logout', (req, res) => {
         if (err) { console.error(err); }
         res.redirect('/');
     });
+});
+
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.get('/user', (req, res) => {
@@ -145,7 +162,7 @@ app.get('/getData', async (req, res) => {
 
 // Serve index.html on root (if using React)
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/build/index.html');
 });
 
 // HTTP server
